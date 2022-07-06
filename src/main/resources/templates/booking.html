@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>Бронирование</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+    <!-- style css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <!-- Responsive-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}"/>
+    <!-- fevicon -->
+    <link rel="icon" th:href="@{/images/fevicon.png}" type="image/gif"/>
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.mCustomScrollbar.min.css}">
+    <!-- Tweaks for older IEs-->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+</head>
+<body>
+<header>
+    <!-- header inner -->
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                    <div class="full">
+                        <div class="center-desk">
+                            <div class="logo">
+                                <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="#" /></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                    <nav class="navigation navbar navbar-expand-md navbar-dark ">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarsExample04">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item">
+                                    Welcome <span sec:authentication="principal.username"> User</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<h1>Бронирование номеров</h1>
+
+
+<form action="#" th:action="@{/booking}" method="post" th:object="${booking}">
+
+    <div class="form-group">
+        <select class="form-control" th:field="*{idRoom}">
+            <option th:each="room: ${roomTypes}"
+                    th:value="${room.id}"
+                    th:text="${room.getRoomType().getType() + ' - Номер: ' +room.getNumber() + ' - Цена: ' + room.getPrice()}"></option>
+        </select>
+    </div>
+
+    <div class="form-group">
+                <select class="form-control" th:field="*{idService}">
+                    <option th:each="service: ${listService}"
+                            th:value="${service.id}"
+                            th:text="${service.getType()}"></option>
+                </select>
+            </div>
+
+    <div class="form-group">
+        <input type="date" class="form-control" th:field="*{dateBegin}">
+    </div>
+    <div class="form-group">
+        <input type="date" class="form-control" th:field="*{dateEnd}">
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="colDay"> Количество дней пребывания </label>
+        <input id="colDay"  class="form-control" th:field="*{colDay}"
+               required autofocus="autofocus" />
+    </div>
+<!--    <div class="alert alert-primary" role="alert" th:text="${booking.getTotalPrice()}" th:if="${booking.getTotalPrice()}">Total</div>-->
+
+    <button type="submit" value="Booking room" class="btn btn-primary">Забронировать</button>
+
+<!--    <p th:if="${#fields.idFromName(booking.getTotalPrice())}"></p>-->
+
+</form>
+
+<a th:href = "@{'/booking_room/' + ${user.id}}">Назад </a>
+
+
+<footer>
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class=" col-md-4">
+                    <h3>Контакты</h3>
+                    <ul class="conta">
+                        <li><i class="fa fa-map-marker" aria-hidden="true"></i>Hotel Keto, Skopska 1 Skopska, Podgorica, Черногория</li>
+                        <li><i class="fa fa-mobile" aria-hidden="true"></i>+38220611221</li>
+                        <li> <i class="fa fa-envelope" aria-hidden="true"></i><a href="#"> keto@gmail.com</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3>Основное</h3>
+                    <ul class="link_menu">
+                        <li class="active"><a th:href="@{/}">Home</a></li>
+                        <li><a th:href="@{/room}">Номера</a></li>
+                        <li><a th:href="@{/gallery}">Фотогалерея</a></li>
+                        <li><a th:href="@{/about}">О нас</a></li>
+                        <li><a th:href="@{/contact}">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3>Новостная подписка</h3>
+                    <form class="bottom_form">
+                        <input class="enter" placeholder="Enter your email" type="text" name="Enter your email">
+                        <button class="sub_btn">subscribe</button>
+                    </form>
+                    <ul class="social_icon">
+                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 offset-md-1">
+
+                        <p>
+                            © 2022 ВСЕ ПРАВА ЗАЩИЩЕНЫ, НО ЭТО НЕ ТОЧНО. СДЕЛАНО BY <a href="https://vk.com/egorka31521"> ME</a>
+                            <br><br>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<br>
+<br>
+</body>
+<script th:src="@{/js/jquery.min.js}" src="/static/js/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" src="/static/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/jquery-3.0.0.min.js}" src="/static/js/jquery-3.0.0.min.js"></script>
+<!-- sidebar -->
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}" src="../static/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script th:src="@{/js/custom.js}" src="../static/js/custom.js"></script>
+</html>
